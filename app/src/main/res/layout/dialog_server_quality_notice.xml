@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_dialog_notice"
+    android:padding="24dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
+
+        <FrameLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_circle_cyan">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_info"
+                android:contentDescription="Server Quality Tip"
+                app:tint="@color/brand_cyan"/>
+        </FrameLayout>
+
+        <ImageButton
+            android:id="@+id/btn_close_notice"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:contentDescription="Close"
+            app:tint="@color/text_secondary"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/notice_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Streaming Quality Tip"
+        android:textColor="@color/text_primary"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-bold"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/notice_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Some servers may offer lower video quality, especially for newly released movies, while other servers provide high quality streams.\n\nFeel free to switch between available servers (Server 1, Server 2, Server 3...) in the video player to find the best quality stream for your show."
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp"
+        android:lineSpacingMultiplier="1.25"
+        android:gravity="center"
+        android:layout_marginBottom="20dp"/>
+
+    <CheckBox
+        android:id="@+id/cb_dont_show_again"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Don't show this again"
+        android:textColor="@color/text_secondary"
+        android:textSize="13sp"
+        android:buttonTint="@color/brand_cyan"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btn_got_it"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Got it"
+        android:textColor="@color/bg_deep"
+        android:textSize="15sp"
+        android:fontFamily="sans-serif-medium"
+        android:textStyle="bold"
+        android:background="@drawable/bg_play_btn"
+        android:stateListAnimator="@null"
+        android:textAllCaps="false"/>
+
+</LinearLayout>

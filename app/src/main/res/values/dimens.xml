@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="spacing_xs">4dp</dimen>
+    <dimen name="spacing_sm">8dp</dimen>
+    <dimen name="spacing_md">16dp</dimen>
+    <dimen name="spacing_lg">24dp</dimen>
+    <dimen name="spacing_xl">32dp</dimen>
+
+    <dimen name="card_corner_radius">8dp</dimen>
+    <dimen name="card_corner_radius_lg">12dp</dimen>
+    <dimen name="card_corner_radius_xl">16dp</dimen>
+    <dimen name="media_card_width">100dp</dimen>
+    <dimen name="grid_card_width">0dp</dimen>
+
+    <dimen name="slideshow_height">260dp</dimen>
+    <dimen name="bottom_nav_height">64dp</dimen>
+    <dimen name="header_height">64dp</dimen>
+
+    <dimen name="text_xs">10sp</dimen>
+    <dimen name="text_sm">11sp</dimen>
+    <dimen name="text_body">13sp</dimen>
+    <dimen name="text_md">14sp</dimen>
+    <dimen name="text_lg">18sp</dimen>
+    <dimen name="text_xl">22sp</dimen>
+    <dimen name="text_2xl">28sp</dimen>
+
+    <dimen name="badge_corner_radius">4dp</dimen>
+    <dimen name="chip_corner_radius">999dp</dimen>
+</resources>

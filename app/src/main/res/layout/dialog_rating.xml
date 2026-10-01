@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_card_dark"
+    android:gravity="center_horizontal">
+
+    <Button
+        android:id="@+id/btn_close"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="end"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:text="✕"
+        android:textColor="@color/text_primary"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/rating_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rate Title"
+        android:textColor="@color/text_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <FrameLayout
+        android:layout_width="260dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="24dp"
+        android:layout_gravity="center">
+
+        <RatingBar
+            android:id="@+id/dialog_rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:numStars="10"
+            android:stepSize="1"
+            android:scaleX="1.6"
+            android:scaleY="1.6"
+            android:isIndicator="false"
+            style="?android:attr/ratingBarStyleSmall"
+            android:progressTint="#00FFFF"
+            android:secondaryProgressTint="#00FFFF" />
+    </FrameLayout>
+
+</LinearLayout>

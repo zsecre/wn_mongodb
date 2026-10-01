@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand -->
+    <color name="brand_cyan">#008B8B</color>
+    <color name="brand_cyan_dim">#1A008B8B</color>
+    <color name="brand_cyan_medium">#33008B8B</color>
+
+    <!-- Light theme backgrounds -->
+    <color name="header_bg">#CCFFFFFF</color>
+    <color name="bg_deep">#F8F9FA</color>
+    <color name="bg_surface">#FFFFFF</color>
+    <color name="bg_card">#E9ECEF</color>
+    <color name="bg_elevated">#DEE2E6</color>
+
+    <!-- Text -->
+    <color name="text_primary">#212529</color>
+    <color name="text_secondary">#495057</color>
+    <color name="text_muted">#6C757D</color>
+    <color name="text_disabled">#ADB5BD</color>
+
+    <!-- Borders -->
+    <color name="border_subtle">#1A000000</color>
+    <color name="border_cyan">#33008B8B</color>
+    <color name="me_card_border">@color/border_cyan</color>
+
+    <!-- Status / Accent -->
+    <color name="accent_red">#DC3545</color>
+    <color name="accent_green">#198754</color>
+    <color name="nav_bg">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
+</resources>

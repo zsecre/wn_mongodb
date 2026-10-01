@@ -1,0 +1,1668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WatchNinja - Media Analytics & Community Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070a13;
+      --card: #0e1526;
+      --card-inner: #151f38;
+      --card-hover: #192542;
+      --border: #1e293b;
+      --primary: #22d3ee;
+      --primary-rgb: 34, 211, 238;
+      --purple: #a855f7;
+      --pink: #ec4899;
+      --green: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: radial-gradient(circle at 50% 0%, #172554 0%, #070a13 55%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px 16px 80px;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 800;
+      box-shadow: 0 0 24px rgba(34, 211, 238, 0.25);
+    }
+
+    .brand-text h1 {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-text p {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #000;
+    }
+    .btn-primary:hover { background: #38bdf8; }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.1); }
+
+    /* Overview KPIs */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .kpi-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 3px;
+    }
+
+    .kpi-views::before { background: var(--primary); }
+    .kpi-likes::before { background: var(--green); }
+    .kpi-dislikes::before { background: var(--red); }
+    .kpi-comments::before { background: var(--purple); }
+    .kpi-users::before { background: var(--amber); }
+
+    .kpi-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .kpi-val {
+      font-size: 28px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .kpi-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Controls Bar (Tabs + Search + Sort) */
+    .controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      background: var(--card);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .tab-btn {
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .tab-btn.active {
+      background: rgba(34, 211, 238, 0.15);
+      color: var(--primary);
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 10px;
+      flex-grow: 1;
+      max-width: 540px;
+    }
+
+    .input-box, .select-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .input-box { flex: 1; }
+    .input-box:focus, .select-box:focus { border-color: var(--primary); }
+
+    /* Table & Rows */
+    .table-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      background: rgba(14, 21, 38, 0.95);
+      padding: 14px 18px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    tr.clickable-row {
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    tr.clickable-row:hover td {
+      background: var(--card-hover);
+    }
+
+    .media-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .media-poster {
+      width: 44px;
+      height: 62px;
+      border-radius: 6px;
+      object-fit: cover;
+      background: var(--card-inner);
+      flex-shrink: 0;
+    }
+
+    .media-poster-placeholder {
+      width: 44px;
+      height: 62px;
+      border-radius: 6px;
+      background: var(--card-inner);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      border: 1px dashed var(--border);
+    }
+
+    .media-name {
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .media-raw-key {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-movie { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+    .badge-tv { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+    .badge-anime { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
+
+    .tag-episode {
+      display: inline-block;
+      background: rgba(34, 211, 238, 0.12);
+      color: var(--primary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 6px;
+    }
+
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .pill-views { color: var(--primary); }
+    .pill-likes { color: var(--green); }
+    .pill-dislikes { color: var(--red); }
+    .pill-rating { color: var(--amber); }
+    .pill-comments { color: var(--purple); }
+
+    /* User Row */
+    .user-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--card-inner);
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .user-name {
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .user-uid {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: monospace;
+    }
+
+    /* Modal / Drawer */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      display: flex;
+      justify-content: flex-end;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .drawer {
+      width: 100%;
+      max-width: 580px;
+      background: var(--card);
+      border-left: 1px solid var(--border);
+      height: 100vh;
+      overflow-y: auto;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.open .drawer {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .drawer-hero {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .drawer-poster {
+      width: 80px;
+      height: 115px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    }
+
+    .drawer-hero-info h2 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .btn-close {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: var(--text);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .btn-close:hover { background: rgba(255, 255, 255, 0.16); }
+
+    .drawer-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .d-stat-box {
+      background: var(--card-inner);
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .d-stat-lbl {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .d-stat-num {
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .comment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .c-card {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .c-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .c-author { font-size: 13px; font-weight: 700; }
+    .c-time { font-size: 11px; color: var(--text-muted); }
+    .c-text { font-size: 13px; line-height: 1.5; color: #e2e8f0; }
+
+    /* Loading Spinner */
+    .loading-wrap {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+
+    .spin {
+      width: 38px;
+      height: 38px;
+      border: 3px solid rgba(34, 211, 238, 0.15);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .status-badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--primary);
+    }
+
+    /* Broadcast Notification Box */
+    .broadcast-card {
+      background: linear-gradient(145deg, #0e1526, #131b2e);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+    .broadcast-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .broadcast-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .broadcast-badge {
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(34, 211, 238, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(34, 211, 238, 0.3);
+      font-weight: 600;
+    }
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .broadcast-input {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: #fff;
+      font-size: 14px;
+      font-family: inherit;
+      width: 100%;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .broadcast-input:focus {
+      border-color: var(--primary);
+    }
+    .broadcast-textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    .btn-notify {
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-weight: 700;
+      font-size: 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(6, 182, 212, 0.3);
+    }
+    .btn-notify:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(6, 182, 212, 0.45);
+    }
+    .btn-notify:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .notify-status {
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+      padding: 12px 16px;
+      border-radius: 8px;
+      line-height: 1.5;
+    }
+    .notify-status.success {
+      display: block;
+      background: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+    .notify-status.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Top Header -->
+    <header>
+      <div class="brand-wrap">
+        <div class="brand-logo">W</div>
+        <div class="brand-text">
+          <h1>WatchNinja Analytics & Community Hub</h1>
+          <p>Real-time views, likes, ratings, user comments, and viewer engagement</p>
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button class="btn btn-outline" onclick="fetchAllData()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+          Refresh Live
+        </button>
+      </div>
+    </header>
+
+    <!-- KPI Summary Grid -->
+    <div class="overview-grid">
+      <div class="kpi-card kpi-views">
+        <div class="kpi-label">Total Views</div>
+        <div class="kpi-val" id="kpiViews">0</div>
+        <div class="kpi-sub">Streaming plays & episodes</div>
+      </div>
+      <div class="kpi-card kpi-likes">
+        <div class="kpi-label">Total Likes</div>
+        <div class="kpi-val" id="kpiLikes">0</div>
+        <div class="kpi-sub" id="kpiRatio">0% positive ratio</div>
+      </div>
+      <div class="kpi-card kpi-dislikes">
+        <div class="kpi-label">Total Dislikes</div>
+        <div class="kpi-val" id="kpiDislikes">0</div>
+        <div class="kpi-sub">Feedback registered</div>
+      </div>
+      <div class="kpi-card kpi-comments">
+        <div class="kpi-label">Total Comments</div>
+        <div class="kpi-val" id="kpiComments">0</div>
+        <div class="kpi-sub">Discussions & thoughts</div>
+      </div>
+      <div class="kpi-card kpi-users">
+        <div class="kpi-label">Active Users</div>
+        <div class="kpi-val" id="kpiUsers">0</div>
+        <div class="kpi-sub">Tracked app participants</div>
+      </div>
+    </div>
+
+    <!-- Broadcast Notification to Users -->
+    <div class="broadcast-card">
+      <div class="broadcast-header">
+        <div class="broadcast-title">
+          <span>📢</span> Broadcast In-App Notification
+        </div>
+        <div class="broadcast-badge" id="targetUsersBadge">
+          Targeting <span id="targetUsersCount">0</span> Registered Users
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="notifFromName">From Name (fromName)</label>
+        <input type="text" id="notifFromName" class="broadcast-input" placeholder="Enter sender name (e.g. WatchNinja Admin)" value="WatchNinja">
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="notifMsg">Message (msg)</label>
+        <textarea id="notifMsg" class="broadcast-input broadcast-textarea" placeholder="Enter notification message to broadcast to all users...">📢 Notice: Watchable is moving to WatchNinja! Please update to continue streaming: https://github.com/zsecre/Watchable/releases/download/v1.0.2/watchninja_v1.0.2.apk</textarea>
+      </div>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 6px;">
+        <button id="btnNotify" class="btn-notify" onclick="sendBroadcastNotification()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <span>Notify All Users</span>
+        </button>
+        <span style="font-size: 12px; color: var(--text-muted);">Each user ID will receive an indexed notification entry in Firebase</span>
+      </div>
+
+      <div id="notifyStatus" class="notify-status"></div>
+    </div>
+
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+      <div class="tabs">
+        <button class="tab-btn active" id="tabTitlesBtn" onclick="switchTab('titles')">Titles & Shows (<span id="countTitles">0</span>)</button>
+        <button class="tab-btn" id="tabUsersBtn" onclick="switchTab('users')">Users (<span id="countUsers">0</span>)</button>
+        <button class="tab-btn" id="tabCommentsBtn" onclick="switchTab('comments')">All Comments (<span id="countComments">0</span>)</button>
+      </div>
+
+      <div class="filter-group">
+        <input type="text" id="searchInput" class="input-box" placeholder="Search by title, username, id, key..." oninput="handleFilter()">
+        <select id="sortSelect" class="select-box" onchange="handleFilter()">
+          <!-- Populated dynamically based on active tab -->
+        </select>
+      </div>
+    </div>
+
+    <!-- TAB 1: Titles & Shows -->
+    <div id="tabTitlesSection" class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Movie / TV / Anime Title</th>
+            <th>Type</th>
+            <th>Views</th>
+            <th>Likes / Dislikes</th>
+            <th>Community Rating</th>
+            <th>Comments</th>
+          </tr>
+        </thead>
+        <tbody id="titlesTableBody">
+          <tr>
+            <td colspan="6">
+              <div class="loading-wrap">
+                <div class="spin"></div>
+                Connecting to Firebase and fetching media titles...
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TAB 2: Users List -->
+    <div id="tabUsersSection" class="table-card" style="display: none;">
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Status / First Activity</th>
+            <th>Titles Watched</th>
+            <th>Total Views</th>
+            <th>Reactions (Likes/Dislikes)</th>
+            <th>Comments</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody">
+          <tr>
+            <td colspan="6">
+              <div class="loading-wrap">
+                <div class="spin"></div>
+                Loading user activity logs...
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- TAB 3: Comments Feed -->
+    <div id="tabCommentsSection" class="table-card" style="display: none;">
+      <table>
+        <thead>
+          <tr>
+            <th>Author</th>
+            <th>Target Title</th>
+            <th>Comment</th>
+            <th>Likes / Replies</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="commentsTableBody">
+          <tr>
+            <td colspan="5">
+              <div class="loading-wrap">
+                <div class="spin"></div>
+                Loading comments feed...
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Detail Slide-out Drawer Modal -->
+  <div class="modal-overlay" id="detailModal" onclick="closeDrawer(event)">
+    <div class="drawer" onclick="event.stopPropagation()">
+      <div class="drawer-header">
+        <div class="drawer-hero">
+          <img id="drawerPoster" class="drawer-poster" src="" alt="Poster" onerror="this.src='https://placehold.co/80x115/151f38/22d3ee?text=Watchable'">
+          <div class="drawer-hero-info">
+            <span id="drawerBadge" class="badge badge-movie">Movie</span>
+            <h2 id="drawerTitle">Title</h2>
+            <div id="drawerKey" class="media-raw-key">KEY</div>
+          </div>
+        </div>
+        <button class="btn-close" onclick="closeDrawer()">✕</button>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="drawer-stats-grid">
+        <div class="d-stat-box">
+          <div class="d-stat-lbl">Views</div>
+          <div class="d-stat-num" style="color:var(--primary)" id="dViews">0</div>
+        </div>
+        <div class="d-stat-box">
+          <div class="d-stat-lbl">Likes / Dislikes</div>
+          <div class="d-stat-num" style="color:var(--green)"><span id="dLikes">0</span> <span style="color:var(--text-muted);font-size:16px;">/</span> <span style="color:var(--red)" id="dDislikes">0</span></div>
+        </div>
+        <div class="d-stat-box">
+          <div class="d-stat-lbl">Community Rating</div>
+          <div class="d-stat-num" style="color:var(--amber)" id="dRating">N/A</div>
+        </div>
+        <div class="d-stat-box">
+          <div class="d-stat-lbl">Comments Count</div>
+          <div class="d-stat-num" style="color:var(--purple)" id="dComments">0</div>
+        </div>
+      </div>
+
+      <!-- Users who watched -->
+      <div>
+        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #fff;">👥 Viewers</h3>
+        <div id="drawerUsersList" style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+          None recorded yet.
+        </div>
+      </div>
+
+      <!-- Comments on this title -->
+      <div>
+        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px; color: #fff;">💬 Community Comments</h3>
+        <div id="drawerCommentsList" class="comment-list">
+          <div style="color:var(--text-muted);font-size:13px;">No comments yet.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const FIREBASE_BASE = "https://watchable-5a2ab-default-rtdb.asia-southeast1.firebasedatabase.app/";
+    const TMDB_KEY = "3c6430e2495a6de8b81d7098ddb4c04c";
+
+    let rawStats = {};
+    let rawComments = {};
+    let rawNotifications = {};
+    let rawUsers = {};
+
+    let mediaMap = {}; // key -> media item
+    let userMap = {};  // uid -> user item
+    let commentsList = [];
+
+    // Memory cache for titles so we don't spam APIs repeatedly
+    const titleCache = JSON.parse(localStorage.getItem("watchable_titles_cache") || "{}");
+
+    let activeTab = "titles";
+
+    async function fetchAllData() {
+      try {
+        const [statsRes, commentsRes, notifRes, usersRes] = await Promise.all([
+          fetch(FIREBASE_BASE + "stats.json"),
+          fetch(FIREBASE_BASE + "comments.json"),
+          fetch(FIREBASE_BASE + "notifications.json"),
+          fetch(FIREBASE_BASE + "users.json")
+        ]);
+
+        rawStats = await statsRes.json() || {};
+        rawComments = await commentsRes.json() || {};
+        rawNotifications = await notifRes.json() || {};
+        rawUsers = await usersRes.json() || {};
+
+        parseDatabase();
+        renderOverview();
+        setupSortOptions();
+        renderCurrentTab();
+
+        // Asynchronously resolve real titles & posters
+        resolveAllTitles();
+      } catch (err) {
+        console.error("Fetch error:", err);
+        alert("Failed to connect to Firebase. Check internet connection.");
+      }
+    }
+
+    function parseDatabase() {
+      mediaMap = {};
+      userMap = {};
+      commentsList = [];
+
+      let totalViews = 0;
+      let totalLikes = 0;
+      let totalDislikes = 0;
+
+      // 1. Process Stats keys
+      const allKeys = new Set([...Object.keys(rawStats), ...Object.keys(rawComments)]);
+
+      allKeys.forEach(key => {
+        const stat = rawStats[key] || {};
+        const commentsObj = rawComments[key] || {};
+
+        const views = stat.views || 0;
+        const likes = stat.likes || 0;
+        const dislikes = stat.dislikes || 0;
+        const ratingCount = stat.ratingCount || 0;
+        const ratingSum = stat.ratingSum || 0;
+        const avgRating = ratingCount > 0 ? (ratingSum / ratingCount).toFixed(1) : null;
+
+        totalViews += views;
+        totalLikes += likes;
+        totalDislikes += dislikes;
+
+        // Determine Type & IDs
+        let type = "Movie";
+        let parsedId = key;
+        let episodeLabel = "";
+
+        if (key.startsWith("MOVIE_")) {
+          type = "Movie";
+          parsedId = key.replace("MOVIE_", "");
+        } else if (key.startsWith("TV_")) {
+          type = "TV Show";
+          const m = key.match(/TV_(.*)_S(\d+)_E(\d+)/);
+          if (m) {
+            parsedId = m[1];
+            episodeLabel = `S${m[2]} E${m[3]}`;
+          }
+        } else if (key.startsWith("ANIME_MOVIE_")) {
+          type = "Anime";
+          parsedId = key.replace("ANIME_MOVIE_", "");
+        } else if (key.startsWith("ANIME_TV_")) {
+          type = "Anime";
+          const m = key.match(/ANIME_TV_(\d+)_E(\d+)/);
+          if (m) {
+            parsedId = m[1];
+            episodeLabel = `Ep ${m[2]}`;
+          }
+        }
+
+        // Parse comments for this media
+        const itemComments = [];
+        Object.entries(commentsObj).forEach(([cId, c]) => {
+          if (!c || typeof c !== 'object') return;
+          const cObj = {
+            id: cId,
+            mediaKey: key,
+            authorId: c.authorId || 'unknown',
+            authorName: c.authorName || 'Anonymous',
+            authorAvatar: c.authorAvatar || 'https://api.dicebear.com/9.x/adventurer/png?seed=User',
+            text: c.text || '',
+            likeCount: c.likeCount || 0,
+            dislikeCount: c.dislikeCount || 0,
+            timestamp: parseInt(c.timeAgo) || parseInt(cId) || Date.now(),
+            replies: c.replies || {}
+          };
+          itemComments.push(cObj);
+          commentsList.push(cObj);
+
+          // Attribute to user
+          const uId = cObj.authorId;
+          ensureUser(uId);
+          userMap[uId].commentsCount++;
+          if (cObj.authorName && cObj.authorName !== 'Anonymous') {
+            userMap[uId].name = cObj.authorName;
+          }
+          if (cObj.authorAvatar) {
+            userMap[uId].avatar = cObj.authorAvatar;
+          }
+          if (cObj.timestamp < userMap[uId].firstActive) userMap[uId].firstActive = cObj.timestamp;
+          if (cObj.timestamp > userMap[uId].lastActive) userMap[uId].lastActive = cObj.timestamp;
+
+          // Attribute replies to respective users
+          if (c.replies && typeof c.replies === 'object') {
+            Object.values(c.replies).forEach(r => {
+              if (r && r.authorId) {
+                ensureUser(r.authorId);
+                userMap[r.authorId].commentsCount++;
+                if (r.authorName && r.authorName !== 'Anonymous') {
+                  userMap[r.authorId].name = r.authorName;
+                }
+                if (r.authorAvatar) {
+                  userMap[r.authorId].avatar = r.authorAvatar;
+                }
+                const rTime = parseInt(r.timeAgo) || Date.now();
+                if (rTime < userMap[r.authorId].firstActive) userMap[r.authorId].firstActive = rTime;
+                if (rTime > userMap[r.authorId].lastActive) userMap[r.authorId].lastActive = rTime;
+              }
+            });
+          }
+        });
+
+        // Parse viewers/users in stats
+        const itemUsers = [];
+        if (stat.users) {
+          Object.entries(stat.users).forEach(([uId, uData]) => {
+            ensureUser(uId);
+            itemUsers.push(uId);
+
+            if (uData.name || uData.username || uData.userName) {
+              userMap[uId].name = uData.name || uData.username || uData.userName;
+            }
+            if (uData.avatar || uData.userAvatar) {
+              userMap[uId].avatar = uData.avatar || uData.userAvatar;
+            }
+
+            if (uData.viewed) {
+              userMap[uId].viewsCount++;
+              userMap[uId].watchedMedia.add(key);
+            }
+            if (uData.liked) userMap[uId].likesCount++;
+            if (uData.disliked) userMap[uId].dislikesCount++;
+            if (uData.rating) userMap[uId].ratingsCount++;
+          });
+        }
+
+        const cached = titleCache[key];
+
+        mediaMap[key] = {
+          key,
+          type,
+          parsedId,
+          episodeLabel,
+          title: cached ? cached.title : (episodeLabel ? `${type} (${parsedId}) ${episodeLabel}` : `${type} (${parsedId})`),
+          poster: cached ? cached.poster : null,
+          views,
+          likes,
+          dislikes,
+          avgRating,
+          ratingCount,
+          commentsCount: itemComments.length,
+          comments: itemComments,
+          users: itemUsers
+        };
+      });
+
+      // 2. Parse Notifications to enrich user names
+      Object.entries(rawNotifications).forEach(([toUid, notifs]) => {
+        ensureUser(toUid);
+        if (notifs && typeof notifs === 'object') {
+          Object.values(notifs).forEach(n => {
+            if (!n) return;
+            if (n.fromId) {
+              ensureUser(n.fromId);
+              if (n.fromName && !userMap[n.fromId].name) {
+                userMap[n.fromId].name = n.fromName;
+              }
+              if (n.fromAvatar && !userMap[n.fromId].avatar) {
+                userMap[n.fromId].avatar = n.fromAvatar;
+              }
+            }
+            const time = n.timestamp || n.time;
+            if (time) {
+              if (time < userMap[toUid].firstActive) userMap[toUid].firstActive = time;
+              if (time > userMap[toUid].lastActive) userMap[toUid].lastActive = time;
+              if (n.fromId) {
+                if (time < userMap[n.fromId].firstActive) userMap[n.fromId].firstActive = time;
+                if (time > userMap[n.fromId].lastActive) userMap[n.fromId].lastActive = time;
+              }
+            }
+          });
+        }
+      });
+
+      // 3. Parse explicit Users node from Firebase (/users.json)
+      if (rawUsers && typeof rawUsers === 'object') {
+        Object.entries(rawUsers).forEach(([uid, uData]) => {
+          if (!uid || !uData) return;
+          ensureUser(uid);
+          const userName = typeof uData === 'string' ? uData : (uData.name || uData.username || uData.userName);
+          const userAvatar = typeof uData === 'object' ? (uData.avatar || uData.userAvatar) : null;
+          const userCreated = typeof uData === 'object' ? (uData.createdAt || uData.timestamp) : null;
+
+          if (userName) userMap[uid].name = userName;
+          if (userAvatar) userMap[uid].avatar = userAvatar;
+          if (userCreated && userCreated < userMap[uid].firstActive) {
+            userMap[uid].firstActive = userCreated;
+          }
+        });
+      }
+    }
+
+    function ensureUser(uid) {
+      if (!userMap[uid]) {
+        userMap[uid] = {
+          id: uid,
+          name: null,
+          avatar: null,
+          firstActive: Infinity,
+          lastActive: 0,
+          viewsCount: 0,
+          likesCount: 0,
+          dislikesCount: 0,
+          ratingsCount: 0,
+          commentsCount: 0,
+          watchedMedia: new Set()
+        };
+      }
+    }
+
+    function renderOverview() {
+      let totalViews = 0, totalLikes = 0, totalDislikes = 0;
+      Object.values(mediaMap).forEach(m => {
+        totalViews += m.views;
+        totalLikes += m.likes;
+        totalDislikes += m.dislikes;
+      });
+
+      const usersCount = Object.keys(userMap).length;
+      const titlesCount = Object.keys(mediaMap).length;
+      const commentsCount = commentsList.length;
+
+      document.getElementById('kpiViews').innerText = totalViews.toLocaleString();
+      document.getElementById('kpiLikes').innerText = totalLikes.toLocaleString();
+      document.getElementById('kpiDislikes').innerText = totalDislikes.toLocaleString();
+      document.getElementById('kpiComments').innerText = commentsCount.toLocaleString();
+      document.getElementById('kpiUsers').innerText = usersCount.toLocaleString();
+
+      const totalReacts = totalLikes + totalDislikes;
+      const ratio = totalReacts > 0 ? Math.round((totalLikes / totalReacts) * 100) : 0;
+      document.getElementById('kpiRatio').innerText = `${ratio}% positive ratio (${totalReacts} votes)`;
+
+      document.getElementById('countTitles').innerText = titlesCount;
+      document.getElementById('countUsers').innerText = usersCount;
+      document.getElementById('countComments').innerText = commentsCount;
+
+      const targetUsersCountEl = document.getElementById('targetUsersCount');
+      if (targetUsersCountEl) {
+        targetUsersCountEl.innerText = usersCount || Object.keys(rawUsers || {}).length || 0;
+      }
+    }
+
+    async function sendBroadcastNotification() {
+      const fromNameInput = (document.getElementById("notifFromName").value || "").trim();
+      const msgInput = (document.getElementById("notifMsg").value || "").trim();
+      const statusDiv = document.getElementById("notifyStatus");
+      const btnNotify = document.getElementById("btnNotify");
+
+      if (!fromNameInput) {
+        statusDiv.className = "notify-status error";
+        statusDiv.textContent = "Please provide a valid 'From Name' (fromName).";
+        return;
+      }
+      if (!msgInput) {
+        statusDiv.className = "notify-status error";
+        statusDiv.textContent = "Please provide a 'Message' (msg).";
+        return;
+      }
+
+      // Collect all unique user IDs across users, stats, comments, and notifications
+      const userIdsSet = new Set();
+      
+      // 1. From rawUsers
+      Object.keys(rawUsers || {}).forEach(uid => {
+        if (uid && uid.trim()) userIdsSet.add(uid.trim());
+      });
+
+      // 2. From userMap
+      Object.keys(userMap || {}).forEach(uid => {
+        if (uid && uid.trim()) userIdsSet.add(uid.trim());
+      });
+
+      // 3. From rawNotifications
+      Object.keys(rawNotifications || {}).forEach(uid => {
+        if (uid && uid.trim()) userIdsSet.add(uid.trim());
+      });
+
+      // Fallback: If set is empty, query /users.json freshly
+      if (userIdsSet.size === 0) {
+        try {
+          const freshRes = await fetch(FIREBASE_BASE + "users.json");
+          const freshData = await freshRes.json() || {};
+          Object.keys(freshData).forEach(uid => {
+            if (uid && uid.trim()) userIdsSet.add(uid.trim());
+          });
+        } catch (e) {
+          console.error("Fresh users fetch failed:", e);
+        }
+      }
+
+      const userIdsList = Array.from(userIdsSet);
+      if (userIdsList.length === 0) {
+        statusDiv.className = "notify-status error";
+        statusDiv.textContent = "No user IDs found in database. Make sure users exist in Firebase.";
+        return;
+      }
+
+      const confirmed = confirm(`Broadcast this notification to all ${userIdsList.length} user(s)?`);
+      if (!confirmed) return;
+
+      btnNotify.disabled = true;
+      btnNotify.innerHTML = `<div class="spin" style="width:16px;height:16px;border-width:2px;margin:0;display:inline-block;vertical-align:middle;"></div> Broadcasting to ${userIdsList.length} users...`;
+      statusDiv.className = "notify-status";
+      statusDiv.style.display = "none";
+
+      try {
+        // Multi-path update payload for Firebase Realtime Database
+        // Format:
+        // "userId_1/1": { "fromName": "...", "msg": "...", "timestamp": 1727339464000, "id": "1", "read": false }
+        // "userId_2/2": { "fromName": "...", "msg": "...", "timestamp": 1727339464000, "id": "2", "read": false }
+        const batchUpdate = {};
+        let notificationIdCounter = 1;
+        const currentTimestamp = Date.now();
+
+        userIdsList.forEach(userId => {
+          const notifId = String(notificationIdCounter++);
+          batchUpdate[`${userId}/${notifId}`] = {
+            id: notifId,
+            fromName: fromNameInput,
+            msg: msgInput,
+            timestamp: currentTimestamp,
+            read: false
+          };
+        });
+
+        const patchRes = await fetch(FIREBASE_BASE + "notifications.json", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(batchUpdate)
+        });
+
+        if (!patchRes.ok) {
+          throw new Error(`Firebase returned HTTP status ${patchRes.status}`);
+        }
+
+        statusDiv.className = "notify-status success";
+        statusDiv.innerHTML = `✅ <strong>Broadcast Complete!</strong> Notification added under notification IDs <strong>1</strong> through <strong>${userIdsList.length}</strong> for <strong>${userIdsList.length}</strong> users in Firebase.`;
+
+        // Refresh all live data
+        await fetchAllData();
+
+      } catch (err) {
+        console.error("Broadcast error:", err);
+        statusDiv.className = "notify-status error";
+        statusDiv.textContent = "Error sending notifications: " + err.message;
+      } finally {
+        btnNotify.disabled = false;
+        btnNotify.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg> <span>Notify All Users</span>`;
+      }
+    }
+
+    function setupSortOptions() {
+      const select = document.getElementById('sortSelect');
+      if (activeTab === "titles") {
+        select.innerHTML = `
+          <option value="views">Most Views</option>
+          <option value="likes">Most Likes</option>
+          <option value="dislikes">Most Dislikes</option>
+          <option value="rating">Highest Rating</option>
+          <option value="comments">Most Comments</option>
+          <option value="name">Title Name (A-Z)</option>
+        `;
+      } else if (activeTab === "users") {
+        select.innerHTML = `
+          <option value="newest">Newest Users First</option>
+          <option value="oldest">Oldest Users First</option>
+          <option value="views">Most Watched Titles</option>
+          <option value="comments">Most Comments</option>
+          <option value="likes">Most Likes Given</option>
+        `;
+      } else {
+        select.innerHTML = `
+          <option value="newest">Newest Comments</option>
+          <option value="oldest">Oldest Comments</option>
+          <option value="likes">Most Liked Comments</option>
+        `;
+      }
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.getElementById('tabTitlesBtn').classList.toggle('active', tab === 'titles');
+      document.getElementById('tabUsersBtn').classList.toggle('active', tab === 'users');
+      document.getElementById('tabCommentsBtn').classList.toggle('active', tab === 'comments');
+
+      document.getElementById('tabTitlesSection').style.display = tab === 'titles' ? 'block' : 'none';
+      document.getElementById('tabUsersSection').style.display = tab === 'users' ? 'block' : 'none';
+      document.getElementById('tabCommentsSection').style.display = tab === 'comments' ? 'block' : 'none';
+
+      setupSortOptions();
+      renderCurrentTab();
+    }
+
+    function handleFilter() {
+      renderCurrentTab();
+    }
+
+    function renderCurrentTab() {
+      if (activeTab === 'titles') renderTitlesTable();
+      else if (activeTab === 'users') renderUsersTable();
+      else renderCommentsTable();
+    }
+
+    /* RENDER TITLES TABLE */
+    function renderTitlesTable() {
+      const tbody = document.getElementById('titlesTableBody');
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const sort = document.getElementById('sortSelect').value;
+
+      let list = Object.values(mediaMap).filter(m => {
+        return m.title.toLowerCase().includes(search) ||
+               m.key.toLowerCase().includes(search) ||
+               m.type.toLowerCase().includes(search);
+      });
+
+      list.sort((a, b) => {
+        if (sort === 'views') return b.views - a.views;
+        if (sort === 'likes') return b.likes - a.likes;
+        if (sort === 'dislikes') return b.dislikes - a.dislikes;
+        if (sort === 'rating') return (parseFloat(b.avgRating) || 0) - (parseFloat(a.avgRating) || 0);
+        if (sort === 'comments') return b.commentsCount - a.commentsCount;
+        if (sort === 'name') return a.title.localeCompare(b.title);
+        return 0;
+      });
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">No matching titles found</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(m => {
+        let badgeClass = "badge-movie";
+        if (m.type === "TV Show") badgeClass = "badge-tv";
+        if (m.type === "Anime") badgeClass = "badge-anime";
+
+        const posterImg = m.poster
+          ? `<img src="${m.poster}" class="media-poster" alt="poster" onerror="this.src='https://placehold.co/44x62/151f38/22d3ee?text=🎬'">`
+          : `<div class="media-poster-placeholder">🎬</div>`;
+
+        return `
+          <tr class="clickable-row" onclick="openMediaDetail('${escapeQuotes(m.key)}')">
+            <td>
+              <div class="media-item">
+                ${posterImg}
+                <div>
+                  <div class="media-name">${escapeHtml(m.title)}</div>
+                  <div class="media-raw-key">${escapeHtml(m.key)} ${m.episodeLabel ? `<span class="tag-episode">${m.episodeLabel}</span>` : ''}</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="badge ${badgeClass}">${m.type}</span></td>
+            <td><span class="stat-pill pill-views">👁️ ${m.views.toLocaleString()}</span></td>
+            <td>
+              <span class="stat-pill pill-likes">👍 ${m.likes}</span>
+              <span class="stat-pill pill-dislikes" style="margin-left:4px;">👎 ${m.dislikes}</span>
+            </td>
+            <td>
+              ${m.avgRating ? `<span class="stat-pill pill-rating">⭐ ${m.avgRating} <span style="font-size:11px;color:#94a3b8">(${m.ratingCount})</span></span>` : '<span style="color:#64748b">No ratings</span>'}
+            </td>
+            <td>
+              <span class="stat-pill pill-comments">💬 ${m.commentsCount}</span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    /* RENDER USERS TABLE */
+    function renderUsersTable() {
+      const tbody = document.getElementById('usersTableBody');
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const sort = document.getElementById('sortSelect').value;
+
+      let list = Object.values(userMap).filter(u => {
+        const name = u.name || "Anonymous User";
+        return name.toLowerCase().includes(search) || u.id.toLowerCase().includes(search);
+      });
+
+      list.sort((a, b) => {
+        if (sort === 'newest') {
+          // largest timestamp first, Infinity goes last
+          const tA = a.firstActive === Infinity ? 0 : a.firstActive;
+          const tB = b.firstActive === Infinity ? 0 : b.firstActive;
+          return tB - tA;
+        }
+        if (sort === 'oldest') {
+          // smallest timestamp first
+          return a.firstActive - b.firstActive;
+        }
+        if (sort === 'views') return b.watchedMedia.size - a.watchedMedia.size;
+        if (sort === 'comments') return b.commentsCount - a.commentsCount;
+        if (sort === 'likes') return b.likesCount - a.likesCount;
+        return 0;
+      });
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)">No users found</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(u => {
+        const name = u.name || `User ${u.id.substring(0, 5)}`;
+        const avatar = u.avatar || `https://api.dicebear.com/9.x/adventurer/png?seed=${u.id}`;
+
+        let statusText = "Active Viewer";
+        if (u.firstActive !== Infinity) {
+          const d = new Date(u.firstActive);
+          statusText = `Joined ${d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}`;
+        }
+
+        return `
+          <tr>
+            <td>
+              <div class="user-item">
+                <img src="${avatar}" class="user-avatar" alt="avatar" onerror="this.src='https://api.dicebear.com/9.x/adventurer/png?seed=default'">
+                <div>
+                  <div class="user-name">${escapeHtml(name)}</div>
+                  <div class="user-uid">ID: ${escapeHtml(u.id)}</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="status-badge">${statusText}</span></td>
+            <td><span class="stat-pill pill-views">🎬 ${u.watchedMedia.size} titles</span></td>
+            <td><span class="stat-pill pill-views">👁️ ${u.viewsCount}</span></td>
+            <td>
+              <span class="stat-pill pill-likes">👍 ${u.likesCount}</span>
+              <span class="stat-pill pill-dislikes" style="margin-left:4px;">👎 ${u.dislikesCount}</span>
+            </td>
+            <td><span class="stat-pill pill-comments">💬 ${u.commentsCount}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    /* RENDER ALL COMMENTS TABLE */
+    function renderCommentsTable() {
+      const tbody = document.getElementById('commentsTableBody');
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const sort = document.getElementById('sortSelect').value;
+
+      let list = commentsList.filter(c => {
+        const targetTitle = mediaMap[c.mediaKey]?.title || c.mediaKey;
+        return c.text.toLowerCase().includes(search) ||
+               c.authorName.toLowerCase().includes(search) ||
+               targetTitle.toLowerCase().includes(search);
+      });
+
+      list.sort((a, b) => {
+        if (sort === 'oldest') return a.timestamp - b.timestamp;
+        if (sort === 'likes') return b.likeCount - a.likeCount;
+        return b.timestamp - a.timestamp; // newest first default
+      });
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted)">No comments match your filter</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(c => {
+        const d = new Date(c.timestamp).toLocaleDateString(undefined, {
+          month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
+        const targetTitle = mediaMap[c.mediaKey]?.title || c.mediaKey;
+
+        return `
+          <tr class="clickable-row" onclick="openMediaDetail('${escapeQuotes(c.mediaKey)}')">
+            <td>
+              <div class="user-item">
+                <img src="${c.authorAvatar}" class="user-avatar" alt="avatar" style="width:34px;height:34px;">
+                <div class="user-name" style="font-size:13px;">${escapeHtml(c.authorName)}</div>
+              </div>
+            </td>
+            <td>
+              <div style="font-weight:600;color:var(--primary);font-size:13px;">${escapeHtml(targetTitle)}</div>
+              <div style="font-size:11px;color:var(--text-muted)">${escapeHtml(c.mediaKey)}</div>
+            </td>
+            <td>
+              <div style="max-width:420px;line-height:1.4;color:#e2e8f0;">${escapeHtml(c.text)}</div>
+            </td>
+            <td>
+              <span class="stat-pill pill-likes">👍 ${c.likeCount}</span>
+            </td>
+            <td style="color:var(--text-muted);font-size:12px;white-space:nowrap;">
+              ${d}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    /* DETAIL DRAWER MODAL */
+    function openMediaDetail(key) {
+      const item = mediaMap[key];
+      if (!item) return;
+
+      document.getElementById('drawerTitle').innerText = item.title;
+      document.getElementById('drawerKey').innerText = item.key;
+      document.getElementById('drawerBadge').innerText = item.type;
+      document.getElementById('drawerBadge').className = `badge badge-${item.type.toLowerCase().replace(' ', '')}`;
+
+      const poster = document.getElementById('drawerPoster');
+      if (item.poster) {
+        poster.src = item.poster;
+        poster.style.display = 'block';
+      } else {
+        poster.src = 'https://placehold.co/80x115/151f38/22d3ee?text=🎬';
+      }
+
+      document.getElementById('dViews').innerText = item.views.toLocaleString();
+      document.getElementById('dLikes').innerText = item.likes;
+      document.getElementById('dDislikes').innerText = item.dislikes;
+      document.getElementById('dRating').innerText = item.avgRating ? `⭐ ${item.avgRating} (${item.ratingCount})` : 'No ratings';
+      document.getElementById('dComments').innerText = item.commentsCount;
+
+      // Render Viewers
+      const viewersEl = document.getElementById('drawerUsersList');
+      if (item.users && item.users.length > 0) {
+        viewersEl.innerHTML = item.users.map(uId => {
+          const u = userMap[uId];
+          const name = u?.name || `User ${uId}`;
+          return `<span style="display:inline-block;background:rgba(255,255,255,0.06);padding:3px 8px;border-radius:6px;margin:3px 4px 3px 0;">👤 ${escapeHtml(name)}</span>`;
+        }).join('');
+      } else {
+        viewersEl.innerHTML = `<span style="color:var(--text-muted)">No viewers recorded in users index.</span>`;
+      }
+
+      // Render Comments
+      const commentsEl = document.getElementById('drawerCommentsList');
+      if (item.comments && item.comments.length > 0) {
+        commentsEl.innerHTML = item.comments.map(c => {
+          const d = new Date(c.timestamp).toLocaleDateString(undefined, {
+            month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+          });
+          return `
+            <div class="c-card">
+              <div class="c-top">
+                <img src="${c.authorAvatar}" style="width:28px;height:28px;border-radius:50%;object-fit:cover;">
+                <div class="c-author">${escapeHtml(c.authorName)}</div>
+                <div class="c-time">• ${d}</div>
+              </div>
+              <div class="c-text">${escapeHtml(c.text)}</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">👍 ${c.likeCount} likes</div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        commentsEl.innerHTML = `<div style="color:var(--text-muted);font-size:13px;">No comments for this title yet.</div>`;
+      }
+
+      document.getElementById('detailModal').classList.add('open');
+    }
+
+    function closeDrawer(e) {
+      if (e && e.target !== document.getElementById('detailModal') && !e.target.classList.contains('btn-close')) {
+        return;
+      }
+      document.getElementById('detailModal').classList.remove('open');
+    }
+
+    /* TITLE RESOLVER VIA TMDB & JIKAN (Anime) */
+    async function resolveAllTitles() {
+      const items = Object.values(mediaMap).filter(m => !titleCache[m.key]);
+
+      for (let i = 0; i < items.length; i++) {
+        const m = items[i];
+        let foundTitle = null;
+        let foundPoster = null;
+
+        try {
+          if (m.type === "Movie" || m.type === "TV Show") {
+            let url = null;
+            if (m.parsedId.startsWith("tt")) {
+              url = `https://api.themoviedb.org/3/find/${m.parsedId}?api_key=${TMDB_KEY}&external_source=imdb_id`;
+            } else if (/^\d+$/.test(m.parsedId)) {
+              const ep = m.type === "TV Show" ? "tv" : "movie";
+              url = `https://api.themoviedb.org/3/${ep}/${m.parsedId}?api_key=${TMDB_KEY}`;
+            }
+
+            if (url) {
+              const res = await fetch(url);
+              const data = await res.json();
+              if (data.movie_results && data.movie_results.length > 0) {
+                foundTitle = data.movie_results[0].title;
+                if (data.movie_results[0].poster_path) foundPoster = `https://image.tmdb.org/t/p/w200${data.movie_results[0].poster_path}`;
+              } else if (data.tv_results && data.tv_results.length > 0) {
+                foundTitle = data.tv_results[0].name;
+                if (data.tv_results[0].poster_path) foundPoster = `https://image.tmdb.org/t/p/w200${data.tv_results[0].poster_path}`;
+              } else if (data.title || data.name) {
+                foundTitle = data.title || data.name;
+                if (data.poster_path) foundPoster = `https://image.tmdb.org/t/p/w200${data.poster_path}`;
+              }
+            }
+          } else if (m.type === "Anime" && /^\d+$/.test(m.parsedId)) {
+            const res = await fetch(`https://api.jikan.moe/v4/anime/${m.parsedId}`);
+            if (res.ok) {
+              const jikanData = await res.json();
+              if (jikanData.data) {
+                foundTitle = jikanData.data.title_english || jikanData.data.title;
+                if (jikanData.data.images?.jpg?.image_url) {
+                  foundPoster = jikanData.data.images.jpg.image_url;
+                }
+              }
+            }
+            // slight delay to respect Jikan's rate limit
+            await new Promise(r => setTimeout(r, 350));
+          }
+
+          if (foundTitle) {
+            const finalTitle = m.episodeLabel ? `${foundTitle} (${m.episodeLabel})` : foundTitle;
+            titleCache[m.key] = { title: finalTitle, poster: foundPoster };
+            m.title = finalTitle;
+            m.poster = foundPoster;
+          }
+        } catch (e) {
+          // ignore lookup error and continue
+        }
+
+        // Periodically refresh UI every 6 resolved items
+        if (i % 6 === 0 || i === items.length - 1) {
+          localStorage.setItem("watchable_titles_cache", JSON.stringify(titleCache));
+          if (activeTab === 'titles') renderTitlesTable();
+        }
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+
+    function escapeQuotes(str) {
+      if (!str) return '';
+      return String(str).replace(/'/g, "\\'");
+    }
+
+    // Auto load on open
+    window.addEventListener('DOMContentLoaded', fetchAllData);
+  </script>
+</body>
+</html>
